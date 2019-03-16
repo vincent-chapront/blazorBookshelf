@@ -1,0 +1,63 @@
+﻿@page "/author/{IdAuthor}"
+
+@using Bookshelf.Model
+@using Bookshelf.ViewModel
+@using Bookshelf.Helpers
+
+@inject ApiClient apiClient
+@inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+
+<h1>@authorFullName </h1>
+
+@if (booksAll == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ListBooksTable DataSource=@booksAll AuthorChanged="@((e) => {Console.WriteLine("Author : AuthorChangedEvent : "+e.ToString()); AuthorChangedHandler(e); })" />
+}
+
+@functions{
+    [Parameter] string IdAuthor { get; set; }
+    Guid IdAuthorProxy { get { return new Guid(IdAuthor); } }
+
+    IEnumerable<BookSummaryViewModel> booksAll = null;
+    string authorFullName = "";
+
+    protected override async Task OnInitAsync()
+    {
+        UpdatePage(IdAuthorProxy);
+    }
+
+    async void UpdatePage(Guid id)
+    {
+        var publishersDto = await apiClient.GetAllPublishers();
+        var authorsDto = await apiClient.GetAllAuthors();
+        var authorDto = await apiClient.GetAuthor(id);
+        var booksDto = await apiClient.GetAllBooksByAuthor(id);
+        authorFullName = authorDto.FirstName + " " + authorDto.LastName;
+        booksAll =
+            booksDto
+            .Select(x =>
+                new BookSummaryViewModel
+                {
+                    Title = x.Title,
+                    Year = x.Year,
+                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault()?.Name ?? "N/A",
+                    Authors =
+                        x.IdAuthors
+                        ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
+                        .Where(a => a != null)
+                        .ToList()
+                });
+    }
+
+    void AuthorChangedHandler(Guid idAuthor)
+    {
+        Console.WriteLine("Author : AuthorChangedHandler : " + idAuthor);
+        uriHelper.NavigateTo("/author/" + idAuthor.ToString());
+        //IdAuthor = idAuthor.ToString();
+        UpdatePage(idAuthor);
+    }
+}

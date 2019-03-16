@@ -1,0 +1,52 @@
+﻿@page "/"
+
+@using Bookshelf.Model
+@using Bookshelf.ViewModel
+@using Bookshelf.Helpers
+
+@inject ApiClient apiClient
+@inject  Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+
+<h1>Liste de tous les livres</h1>
+
+@if (booksAll == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ListBooksTable DataSource=@booksAll AuthorChanged="@((e) => {Console.WriteLine("Index: AuthorChangedEvent : "+e.ToString()); AuthorChangedHandler(e); })"/>
+}
+
+@functions{
+
+    IEnumerable<BookSummaryViewModel> booksAll = null;
+    protected override async Task OnInitAsync()
+    {
+        var publishersDto = await apiClient.GetAllPublishers();
+        var authorsDto = await apiClient.GetAllAuthors();
+        var booksDto = await apiClient.GetAllBooks();
+
+        booksAll =
+            booksDto
+            .Select(x =>
+                new BookSummaryViewModel
+                {
+                    Title = x.Title,
+                    Year = x.Year,
+                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault()?.Name ?? "N/A",
+                    Authors =
+                        x.IdAuthors
+                        ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
+                        .Where(a=>a!=null)
+                        .ToList()
+                });
+    }
+
+    void AuthorChangedHandler(Guid idAuthor)
+    {
+        Console.WriteLine("Index : AuthorChangedHandler : " + idAuthor);
+        //IdAuthor = idAuthor.ToString();
+        uriHelper.NavigateTo("/Author/" + idAuthor.ToString());
+    }
+}

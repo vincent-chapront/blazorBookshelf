@@ -1,0 +1,86 @@
+﻿@using Bookshelf.Model
+
+@inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+@inject ApiClient apiClient
+@inject AppState appState
+
+    <table>
+        <tr>
+            <td colspan="2">@(errorMessage)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>@(errorName)</td>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td><input type="text" bind="@(userModel.Name)" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>@(errorPassword)</td>
+        </tr>
+        <tr>
+            <td>Mot de passe</td>
+            <td><input type="text" bind="@(userModel.Password)" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button onclick="@Login">Login</button></td>
+        </tr>
+    </table>
+
+@functions{
+    UserModel userModel = new UserModel();
+    string errorMessage = "";
+    string errorName = "";
+    string errorPassword = "";
+    void Login()
+    {
+        if(!Validate(userModel))
+        {
+            return;
+        }
+
+        bool isConnectionValid = apiClient.Login(userModel).Result;
+
+        if (isConnectionValid)
+        {
+            appState.IsSignedIn = true;
+            errorMessage = "Connection OK";
+            uriHelper.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Nom ou mot de passe incorrect";
+        }
+    }
+
+    bool Validate(UserModel userModel)
+    {
+#if DEBUG
+        return true;
+#endif
+        bool result = true;
+        if(string.IsNullOrWhiteSpace(userModel.Name))
+        {
+            errorName = "Le champ \"Nom\" est obligatoire";
+            result = false;
+        }
+        else
+        {
+            errorName = "";
+        }
+
+        if(string.IsNullOrWhiteSpace(userModel.Name))
+        {
+            errorPassword = "Le champ \"Mot de passe\" est obligatoire";
+            result = false;
+        }
+        else
+        {
+            errorPassword = "";
+        }
+
+        return result;
+    }
+}
