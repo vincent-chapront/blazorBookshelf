@@ -1,4 +1,4 @@
-﻿@page "/author/{IdAuthor}"
+﻿@page "/publisher/{Id}"
 
 @using Bookshelf.Model
 @using Bookshelf.ViewModel
@@ -7,7 +7,7 @@
 @inject ApiClient apiClient
 @inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
 
-<h1>@authorFullName </h1>
+<h1>Liste des livres publiés par @FullName </h1>
 
 @if (booksAll == null)
 {
@@ -15,28 +15,29 @@
 }
 else
 {
-    <ListBooksTable DataSource=@booksAll AuthorChanged="@((e) => {Console.WriteLine("Author : AuthorChangedEvent : "+e.ToString()); AuthorChangedHandler(e); })" />
+    <ListBooksTable DataSource=@booksAll
+                    AuthorChanged="@((e) => AuthorChangedHandler(e))"
+                    PublisherChanged="@((e) => PublisherChangedHandler(e))" />
 }
 
 @functions{
-    [Parameter] string IdAuthor { get; set; }
-    Guid IdAuthorProxy { get { return new Guid(IdAuthor); } }
+    [Parameter] string Id { get; set; }
+    Guid IdProxy { get { return new Guid(Id); } }
 
     IEnumerable<BookSummaryViewModel> booksAll = null;
-    string authorFullName = "";
+    string FullName = "";
 
     protected override async Task OnInitAsync()
     {
-        UpdatePage(IdAuthorProxy);
+        UpdatePage(IdProxy);
     }
 
     async void UpdatePage(Guid id)
     {
-        var publishersDto = await apiClient.GetAllPublishers();
+        var publisherDto = await apiClient.GetPublisher(id);
         var authorsDto = await apiClient.GetAllAuthors();
-        var authorDto = await apiClient.GetAuthor(id);
-        var booksDto = await apiClient.GetAllBooksByAuthor(id);
-        authorFullName = authorDto.FirstName + " " + authorDto.LastName;
+        var booksDto = await apiClient.GetAllBooksByPublisher(id);
+        FullName = publisherDto.Name;
         booksAll =
             booksDto
             .Select(x =>
@@ -44,7 +45,7 @@ else
                 {
                     Title = x.Title,
                     Year = x.Year,
-                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault()?.Name ?? "N/A",
+                    Publisher = publisherDto,
                     Authors =
                         x.IdAuthors
                         ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
@@ -55,9 +56,12 @@ else
 
     void AuthorChangedHandler(Guid idAuthor)
     {
-        Console.WriteLine("Author : AuthorChangedHandler : " + idAuthor);
         uriHelper.NavigateTo("/author/" + idAuthor.ToString());
-        //IdAuthor = idAuthor.ToString();
-        UpdatePage(idAuthor);
+    }
+
+    void PublisherChangedHandler(Guid idPublisher)
+    {
+        uriHelper.NavigateTo("/publisher/" + idPublisher.ToString());
+        UpdatePage(idPublisher);
     }
 }

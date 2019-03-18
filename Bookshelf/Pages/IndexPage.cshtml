@@ -5,7 +5,7 @@
 @using Bookshelf.Helpers
 
 @inject ApiClient apiClient
-@inject  Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+@inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
 
 <h1>Liste de tous les livres</h1>
 
@@ -15,7 +15,9 @@
 }
 else
 {
-    <ListBooksTable DataSource=@booksAll AuthorChanged="@((e) => {Console.WriteLine("Index: AuthorChangedEvent : "+e.ToString()); AuthorChangedHandler(e); })"/>
+    <ListBooksTable DataSource=@booksAll
+                    AuthorChanged="@((e) => AuthorChangedHandler(e))"
+                    PublisherChanged="@((e) => PublisherChangedHandler(e))" />
 }
 
 @functions{
@@ -34,19 +36,22 @@ else
                 {
                     Title = x.Title,
                     Year = x.Year,
-                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault()?.Name ?? "N/A",
+                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault() ?? new Publisher { Id = Guid.Empty, Name = "N/A" },
                     Authors =
                         x.IdAuthors
                         ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
-                        .Where(a=>a!=null)
+                        .Where(a => a != null)
                         .ToList()
                 });
     }
 
     void AuthorChangedHandler(Guid idAuthor)
     {
-        Console.WriteLine("Index : AuthorChangedHandler : " + idAuthor);
-        //IdAuthor = idAuthor.ToString();
         uriHelper.NavigateTo("/Author/" + idAuthor.ToString());
+    }
+
+    void PublisherChangedHandler(Guid idPublisher)
+    {
+        uriHelper.NavigateTo("/publisher/" + idPublisher.ToString());
     }
 }

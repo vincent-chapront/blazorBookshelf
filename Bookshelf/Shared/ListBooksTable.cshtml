@@ -16,11 +16,11 @@
         <tr>
             <td>@book.Title</td>
             <td>@book.Year</td>
-            <td>@book.Publisher</td>
+            <td><span class="link" onclick="@(()=>SelectPublisher(book.Publisher.Id))">@book.Publisher.Name</span></td>
             <td>
                 @foreach (var author in book.Authors)
                 {
-                    <span onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br/>
+                    <span class="link" onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br/>
                 }
             </td>
         </tr>
@@ -31,6 +31,7 @@
 {
     [Parameter] IEnumerable<BookSummaryViewModel> DataSource { get; set; }
     [Parameter] private Action<Guid> AuthorChanged { get; set; }
+    [Parameter] private Action<Guid> PublisherChanged { get; set; }
 
     Tris currentSort = Tris.Title;
     Orders currentOrder = Orders.Ascending;
@@ -68,9 +69,14 @@
         currentSort = tri;
     }
 
-    void SelectAuthor(Guid idAuthor)
+    void SelectAuthor(Guid id)
     {
-        Console.WriteLine("ListBooksTableSelectAuthor : idAuthor : " + idAuthor);
-        AuthorChanged(idAuthor);
+        AuthorChanged?.Invoke(id);
+    }
+
+    void SelectPublisher(Guid id)
+    {
+        Console.WriteLine("ListBooksTable.SelectPublisher : " + id+" : "+(PublisherChanged!=null));
+        PublisherChanged?.Invoke(id);
     }
 }

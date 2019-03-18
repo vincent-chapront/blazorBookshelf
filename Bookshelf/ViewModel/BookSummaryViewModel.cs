@@ -7,7 +7,7 @@ namespace Bookshelf.ViewModel
     {
         public string Title { get; set; }
         public int Year { get; set; }
-        public string Publisher { get; set; }
+        public Publisher Publisher { get; set; }
 
         public List<Author> Authors { get; set; }
     }

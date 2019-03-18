@@ -45,9 +45,19 @@ namespace Bookshelf
             return books.Where(x => x.IdAuthors.Contains(id)).ToList() ;
         }
 
+        public async Task<List<Book>> GetAllBooksByPublisher(Guid id)
+        {
+            return books.Where(x => x.IdPublisher == id).ToList() ;
+        }
+
         public async Task<List<Publisher>> GetAllPublishers()
         {
             return publishers;
+        }
+
+        public async Task<Publisher> GetPublisher(Guid id)
+        {
+            return publishers.FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<List<Author>> GetAllAuthors()
