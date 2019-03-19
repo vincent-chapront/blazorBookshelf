@@ -3,65 +3,37 @@
 @using Bookshelf.Model
 @using Bookshelf.ViewModel
 @using Bookshelf.Helpers
+@using Microsoft.AspNetCore.Components.Services
 
 @inject ApiClient apiClient
-@inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+@inject IUriHelper uriHelper
 
-<h1>Liste des livres publiés par @FullName </h1>
+<h1>Liste des livres publiés par @vm.PublisherFullName </h1>
 
-@if (booksAll == null)
+@if (vm.BooksAll == null)
 {
     <p>Loading...</p>
 }
 else
 {
-    <ListBooksTable DataSource=@booksAll
-                    AuthorChanged="@((e) => AuthorChangedHandler(e))"
-                    PublisherChanged="@((e) => PublisherChangedHandler(e))" />
+    <ListBooksTable DataSource=@vm.BooksAll
+                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
+                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
 }
 
 @functions{
     [Parameter] string Id { get; set; }
-    Guid IdProxy { get { return new Guid(Id); } }
+    
+    PublisherPageViewModel vm = null;
 
-    IEnumerable<BookSummaryViewModel> booksAll = null;
-    string FullName = "";
+    protected override void OnInit()
+    {
+        base.OnInit();
+        vm = new PublisherPageViewModel(uriHelper, apiClient);
+    }
 
     protected override async Task OnInitAsync()
     {
-        UpdatePage(IdProxy);
-    }
-
-    async void UpdatePage(Guid id)
-    {
-        var publisherDto = await apiClient.GetPublisher(id);
-        var authorsDto = await apiClient.GetAllAuthors();
-        var booksDto = await apiClient.GetAllBooksByPublisher(id);
-        FullName = publisherDto.Name;
-        booksAll =
-            booksDto
-            .Select(x =>
-                new BookSummaryViewModel
-                {
-                    Title = x.Title,
-                    Year = x.Year,
-                    Publisher = publisherDto,
-                    Authors =
-                        x.IdAuthors
-                        ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
-                        .Where(a => a != null)
-                        .ToList()
-                });
-    }
-
-    void AuthorChangedHandler(Guid idAuthor)
-    {
-        uriHelper.NavigateTo("/author/" + idAuthor.ToString());
-    }
-
-    void PublisherChangedHandler(Guid idPublisher)
-    {
-        uriHelper.NavigateTo("/publisher/" + idPublisher.ToString());
-        UpdatePage(idPublisher);
+        vm.UpdatePage(new Guid(Id));
     }
 }

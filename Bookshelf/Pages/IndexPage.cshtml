@@ -1,57 +1,35 @@
 ﻿@page "/"
 
-@using Bookshelf.Model
+@using Microsoft.AspNetCore.Components.Services
 @using Bookshelf.ViewModel
-@using Bookshelf.Helpers
 
 @inject ApiClient apiClient
-@inject Microsoft.AspNetCore.Components.Services.IUriHelper uriHelper
+@inject IUriHelper uriHelper
 
 <h1>Liste de tous les livres</h1>
 
-@if (booksAll == null)
+@if (vm.BooksAll == null)
 {
     <p>Loading...</p>
 }
 else
 {
-    <ListBooksTable DataSource=@booksAll
-                    AuthorChanged="@((e) => AuthorChangedHandler(e))"
-                    PublisherChanged="@((e) => PublisherChangedHandler(e))" />
+    <ListBooksTable DataSource=@vm.BooksAll
+                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
+                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
 }
 
 @functions{
+    IndexPageViewModel vm = null;
 
-    IEnumerable<BookSummaryViewModel> booksAll = null;
+    protected override void OnInit()
+    {
+        base.OnInit();
+        vm = new IndexPageViewModel(uriHelper, apiClient);
+    }
+
     protected override async Task OnInitAsync()
     {
-        var publishersDto = await apiClient.GetAllPublishers();
-        var authorsDto = await apiClient.GetAllAuthors();
-        var booksDto = await apiClient.GetAllBooks();
-
-        booksAll =
-            booksDto
-            .Select(x =>
-                new BookSummaryViewModel
-                {
-                    Title = x.Title,
-                    Year = x.Year,
-                    Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault() ?? new Publisher { Id = Guid.Empty, Name = "N/A" },
-                    Authors =
-                        x.IdAuthors
-                        ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
-                        .Where(a => a != null)
-                        .ToList()
-                });
-    }
-
-    void AuthorChangedHandler(Guid idAuthor)
-    {
-        uriHelper.NavigateTo("/Author/" + idAuthor.ToString());
-    }
-
-    void PublisherChangedHandler(Guid idPublisher)
-    {
-        uriHelper.NavigateTo("/publisher/" + idPublisher.ToString());
+        vm.UpdatePage();
     }
 }
