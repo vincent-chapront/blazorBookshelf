@@ -1,14 +1,12 @@
 ﻿@page "/publisher/{Id}"
 
-@using Bookshelf.Model
-@using Bookshelf.ViewModel
-@using Bookshelf.Helpers
+@using Bookshelf.ViewModel.Page
 @using Microsoft.AspNetCore.Components.Services
 
 @inject ApiClient apiClient
 @inject IUriHelper uriHelper
 
-<h1>Liste des livres publiés par @vm.PublisherFullName </h1>
+<h1>@vm.Title</h1>
 
 @if (vm.BooksAll == null)
 {

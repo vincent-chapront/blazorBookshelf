@@ -1,24 +1,25 @@
-﻿using Bookshelf.Model;
+﻿using Microsoft.AspNetCore.Components.Services;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Components.Services;
+using Bookshelf.ViewModel.Table;
 
-namespace Bookshelf.ViewModel
+namespace Bookshelf.ViewModel.Page
 {
-    public class AuthorPageViewModel : PageViewModel
+    public class PublisherPageViewModel : PageViewModel
     {
-        public string AuthorFullName { get; set; }
+        public string PublisherFullName { get; set; }
 
-        public AuthorPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public string Title { get { return $"Liste des livres publiés par {PublisherFullName}"; } }
+
+        public PublisherPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
             : base(uriHelper, apiClient){}
 
         public async void UpdatePage(Guid id)
         {
-            var publishersDto = await apiClient.GetAllPublishers();
+            var publisherDto = await apiClient.GetPublisher(id);
             var authorsDto = await apiClient.GetAllAuthors();
-            var authorDto = await apiClient.GetAuthor(id);
-            var booksDto = await apiClient.GetAllBooksByAuthor(id);
-            AuthorFullName = authorDto.FirstName + " " + authorDto.LastName;
+            var booksDto = await apiClient.GetAllBooksByPublisher(id);
+            PublisherFullName = publisherDto.Name;
             BooksAll =
                 booksDto
                 .Select(x =>
@@ -26,7 +27,7 @@ namespace Bookshelf.ViewModel
                     {
                         Title = x.Title,
                         Year = x.Year,
-                        Publisher = publishersDto.Where(p => p.Id == x.IdPublisher).FirstOrDefault() ?? new Publisher { Id = Guid.Empty, Name = "N/A" },
+                        Publisher = publisherDto,
                         Authors =
                             x.IdAuthors
                             ?.Select(a => authorsDto.FirstOrDefault(b => b.Id == a))
@@ -38,12 +39,12 @@ namespace Bookshelf.ViewModel
         public override void AuthorChangedHandler(Guid idAuthor)
         {
             uriHelper.NavigateTo("/author/" + idAuthor.ToString());
-            UpdatePage(idAuthor);
         }
 
         public override void PublisherChangedHandler(Guid idPublisher)
         {
             uriHelper.NavigateTo("/publisher/" + idPublisher.ToString());
+            UpdatePage(idPublisher);
         }
     }
 }

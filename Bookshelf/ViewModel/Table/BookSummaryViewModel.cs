@@ -1,7 +1,7 @@
 ﻿using Bookshelf.Model;
 using System.Collections.Generic;
 
-namespace Bookshelf.ViewModel
+namespace Bookshelf.ViewModel.Table
 {
     public class BookSummaryViewModel
     {

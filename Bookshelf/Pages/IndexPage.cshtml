@@ -1,12 +1,12 @@
 ﻿@page "/"
 
 @using Microsoft.AspNetCore.Components.Services
-@using Bookshelf.ViewModel
+@using Bookshelf.ViewModel.Page
 
 @inject ApiClient apiClient
 @inject IUriHelper uriHelper
 
-<h1>Liste de tous les livres</h1>
+<h1>@vm.Title</h1>
 
 @if (vm.BooksAll == null)
 {

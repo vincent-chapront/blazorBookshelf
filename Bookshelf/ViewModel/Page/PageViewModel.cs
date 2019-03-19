@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Bookshelf.ViewModel.Table;
 using Microsoft.AspNetCore.Components.Services;
 
-namespace Bookshelf.ViewModel
+namespace Bookshelf.ViewModel.Page
 {
     public abstract class PageViewModel
     {
