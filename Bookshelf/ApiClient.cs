@@ -35,6 +35,7 @@ namespace Bookshelf
             };
         }
 
+#region Books
         public async Task<List<Book>> GetAllBooks()
         {
             return books;
@@ -49,17 +50,9 @@ namespace Bookshelf
         {
             return books.Where(x => x.IdPublisher == id).ToList() ;
         }
+#endregion Books
 
-        public async Task<List<Publisher>> GetAllPublishers()
-        {
-            return publishers;
-        }
-
-        public async Task<Publisher> GetPublisher(Guid id)
-        {
-            return publishers.FirstOrDefault(x => x.Id == id);
-        }
-
+#region Authors
         public async Task<List<Author>> GetAllAuthors()
         {
             return authors;
@@ -69,6 +62,31 @@ namespace Bookshelf
         {
             return authors.FirstOrDefault(x => x.Id == id);
         }
+
+        public async Task<Author> AddAuthor(string lastName, string firstName)
+        {
+            var author = new Author{
+                FirstName=firstName,
+                LastName=lastName,
+                Id=Guid.NewGuid()
+                } ;
+            authors.Add(author);
+            Console.WriteLine("AddAuthor : "+author.Id);
+            return author;
+        }
+#endregion Authors
+
+#region Publishers
+        public async Task<List<Publisher>> GetAllPublishers()
+        {
+            return publishers;
+        }
+
+        public async Task<Publisher> GetPublisher(Guid id)
+        {
+            return publishers.FirstOrDefault(x => x.Id == id);
+        }
+#endregion Publishers
 
         public async Task<bool> Login(UserModel model)
         {
