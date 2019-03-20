@@ -86,6 +86,17 @@ namespace Bookshelf
         {
             return publishers.FirstOrDefault(x => x.Id == id);
         }
+
+        public async Task<Publisher> AddPublisher(string name)
+        {
+            var publisher = new Publisher{
+                Name=name,
+                Id=Guid.NewGuid()
+                } ;
+            publishers.Add(publisher);
+            Console.WriteLine("AddAuthor : "+publisher.Id);
+            return publisher;
+        }
 #endregion Publishers
 
         public async Task<bool> Login(UserModel model)
