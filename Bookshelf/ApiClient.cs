@@ -50,9 +50,25 @@ namespace Bookshelf
         {
             return books.Where(x => x.IdPublisher == id).ToList() ;
         }
-#endregion Books
 
-#region Authors
+        public async Task<Book> AddBook(string title, int year, Guid publisherId)
+        {
+            var book = new Book
+            {
+                Title = title,
+                Year = year,
+                Id = Guid.NewGuid(),
+                IdAuthors = new List<Guid>(),
+                IdPublisher = publisherId
+            };
+            books.Add(book);
+            Console.WriteLine("AddBook : " + book.Id);
+            return book;
+        }
+
+        #endregion Books
+
+        #region Authors
         public async Task<List<Author>> GetAllAuthors()
         {
             return authors;

@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/books"
 
 @using Microsoft.AspNetCore.Components.Services
 @using Bookshelf.ViewModel.Page
@@ -14,6 +15,7 @@
 }
 else
 {
+    <a href="/bookCreate">Ajouter un livre</a>
     <ListBooksTable DataSource=@vm.BooksAll
                     AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
                     PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
