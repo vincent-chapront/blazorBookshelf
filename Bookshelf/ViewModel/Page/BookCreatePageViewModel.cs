@@ -41,8 +41,8 @@ namespace Bookshelf.ViewModel.Page
         public void Ajouter()
         {
             if (Validate())
-            {                
-                var book = apiClient.AddBook(Title, int.Parse(Year), PublisherId).Result;
+            {
+                var book = apiClient.AddBook(Title, int.Parse(Year), new Guid(PublisherId)).Result;
                 //uriHelper.NavigateTo("/book/" + book.Id);
                 uriHelper.NavigateTo("/books/");
             }
