@@ -1,3 +1,4 @@
+using Bookshelf;
 using BookshelfBlazorPreview.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,8 @@ namespace BookshelfBlazorPreview
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<ApiClient, ApiClient>();
+            services.AddSingleton<AppState, AppState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
