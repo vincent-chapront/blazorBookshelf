@@ -1,5 +1,4 @@
-﻿
-@page "/authorcreate"
+﻿@page "/authorcreate"
 
 @using Bookshelf.ViewModel.Page
 @using Microsoft.AspNetCore.Components.Services
@@ -9,28 +8,27 @@
 
 <h1>@vm.Title</h1>
 
-    <table>
-        <tr>
-            <td></td>
-            <td style="color:red">@vm.FirstNameMessage</td>
-        </tr>
-        <tr>
-            <td>Prénom</td>
-            <td><input type="text" bind="@vm.FirstName"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="color:red">@vm.LastNameMessage</td>
-        </tr>
-        <tr>
-            <td>Nom</td>
-            <td><input type="text" bind="@vm.LastName"/></td>
-        </tr>
-        <tr>
-            <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
-        </tr>
-    </table>
-    
+<table>
+    <tr>
+        <td></td>
+        <td style="color:red">@vm.FirstNameMessage</td>
+    </tr>
+    <tr>
+        <td>Prénom</td>
+        <td><input type="text" bind="@vm.FirstName" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="color:red">@vm.LastNameMessage</td>
+    </tr>
+    <tr>
+        <td>Nom</td>
+        <td><input type="text" bind="@vm.LastName" /></td>
+    </tr>
+    <tr>
+        <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
+    </tr>
+</table>
 
 @functions{
     AuthorCreatePageViewModel vm = null;

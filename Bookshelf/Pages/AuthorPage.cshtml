@@ -10,13 +10,13 @@
 
 @if (vm.BooksAll == null)
 {
-    <p>Loading...</p>
+<p>Loading...</p>
 }
 else
 {
-    <ListBooksTable DataSource=@vm.BooksAll
-                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
-                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
+<ListBooksTable DataSource=@vm.BooksAll
+                AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
+                PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
 }
 
 @functions{

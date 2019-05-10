@@ -8,6 +8,5 @@ namespace Bookshelf.Model
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
     }
 }

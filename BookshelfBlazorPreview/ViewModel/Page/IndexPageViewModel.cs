@@ -2,26 +2,25 @@
 using System.Linq;
 using Bookshelf.Model;
 using Bookshelf.ViewModel.Table;
-using Microsoft.AspNetCore.Components.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace Bookshelf.ViewModel.Page
 {
-    public class AuthorPageViewModel : PageViewModel
+    public class IndexPageViewModel : PageViewModel
     {
-        public string AuthorFullName { get; set; }
+        public string PublisherFullName { get; set; }
 
-        public string Title { get { return $"Liste des livres de {AuthorFullName}"; } }
+        public string Title { get { return "Liste des livres"; } }
 
-        public AuthorPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public IndexPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
             : base(uriHelper, apiClient) { }
 
-        public async void UpdatePage(Guid id)
+        public async void UpdatePage()
         {
             var publishersDto = await apiClient.GetAllPublishers();
             var authorsDto = await apiClient.GetAllAuthors();
-            var authorDto = await apiClient.GetAuthor(id);
-            var booksDto = await apiClient.GetAllBooksByAuthor(id);
-            AuthorFullName = authorDto.FirstName + " " + authorDto.LastName;
+            var booksDto = await apiClient.GetAllBooks();
+
             BooksAll =
                 booksDto
                 .Select(x =>
@@ -40,8 +39,7 @@ namespace Bookshelf.ViewModel.Page
 
         public override void AuthorChangedHandler(Guid idAuthor)
         {
-            uriHelper.NavigateTo("/author/" + idAuthor.ToString());
-            UpdatePage(idAuthor);
+            uriHelper.NavigateTo("/Author/" + idAuthor.ToString());
         }
 
         public override void PublisherChangedHandler(Guid idPublisher)

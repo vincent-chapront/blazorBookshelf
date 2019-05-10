@@ -1,8 +1,6 @@
-﻿
-@using Bookshelf.ViewModel.Table
+﻿@using Bookshelf.ViewModel.Table
 @using Bookshelf.Model
 @using Bookshelf.Helpers
-
 
 <table>
     <tr>
@@ -13,17 +11,17 @@
     </tr>
     @foreach (var book in DataSourceSorted)
     {
-        <tr>
-            <td>@book.Title</td>
-            <td>@book.Year</td>
-            <td><span class="link" onclick="@(()=>SelectPublisher(book.Publisher.Id))">@book.Publisher.Name</span></td>
-            <td>
-                @foreach (var author in book.Authors)
+    <tr>
+        <td>@book.Title</td>
+        <td>@book.Year</td>
+        <td><span class="link" onclick="@(()=>SelectPublisher(book.Publisher.Id))">@book.Publisher.Name</span></td>
+        <td>
+            @foreach (var author in book.Authors)
                 {
-                    <span class="link" onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br/>
+            <span class="link" onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br />
                 }
-            </td>
-        </tr>
+        </td>
+    </tr>
     }
 </table>
 

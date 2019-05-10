@@ -1,5 +1,4 @@
-﻿
-@page "/bookcreate"
+﻿@page "/bookcreate"
 
 @using Bookshelf.ViewModel.Page
 @using Microsoft.AspNetCore.Components.Services
@@ -37,13 +36,13 @@
             <select bind="@vm.PublisherId">
                 @if(vm.Publishers.Count() == 0)
                 {
-                    <option>Chargement des éditeurs...</option>
+                <option>Chargement des éditeurs...</option>
                 }
                 else
                 {
                     foreach(var v in vm.Publishers)
                     {
-                        <option value="@v.Id">@v.Name</option>
+                <option value="@v.Id">@v.Name</option>
                     }
                 }
             </select>
@@ -54,7 +53,6 @@
         <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
     </tr>
 </table>
-    
 
 @functions{
     BookCreatePageViewModel vm = null;
@@ -65,7 +63,7 @@
         base.OnInit();
         Console.WriteLine("Init BookCreatePage B");
         vm = new BookCreatePageViewModel(uriHelper, apiClient);
-        
+
         Console.WriteLine("Init BookCreatePage C");
     }
 

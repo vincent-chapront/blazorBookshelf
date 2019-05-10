@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bookshelf.ViewModel.Table;
-using Microsoft.AspNetCore.Components.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace Bookshelf.ViewModel.Page
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bookshelf.Model;
-using Microsoft.AspNetCore.Components.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace Bookshelf.ViewModel.Page
 {

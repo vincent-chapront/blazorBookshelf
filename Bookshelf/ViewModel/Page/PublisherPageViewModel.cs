@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Services;
-using System;
+﻿using System;
 using System.Linq;
 using Bookshelf.ViewModel.Table;
+using Microsoft.AspNetCore.Components.Services;
 
 namespace Bookshelf.ViewModel.Page
 {
@@ -12,7 +12,7 @@ namespace Bookshelf.ViewModel.Page
         public string Title { get { return $"Liste des livres publiés par {PublisherFullName}"; } }
 
         public PublisherPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
-            : base(uriHelper, apiClient){}
+            : base(uriHelper, apiClient) { }
 
         public async void UpdatePage(Guid id)
         {

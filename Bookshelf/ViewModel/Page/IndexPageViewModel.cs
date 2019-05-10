@@ -1,20 +1,19 @@
-﻿using Bookshelf.Model;
-using Microsoft.AspNetCore.Components.Services;
-using System;
-using Bookshelf.ViewModel.Table;
+﻿using System;
 using System.Linq;
+using Bookshelf.Model;
+using Bookshelf.ViewModel.Table;
+using Microsoft.AspNetCore.Components.Services;
 
 namespace Bookshelf.ViewModel.Page
 {
     public class IndexPageViewModel : PageViewModel
     {
-
         public string PublisherFullName { get; set; }
 
         public string Title { get { return "Liste des livres"; } }
 
         public IndexPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
-            :base(uriHelper, apiClient){}
+            : base(uriHelper, apiClient) { }
 
         public async void UpdatePage()
         {

@@ -10,18 +10,18 @@
 
 @if (vm.BooksAll == null)
 {
-    <p>Loading...</p>
+<p>Loading...</p>
 }
 else
 {
-    <ListBooksTable DataSource=@vm.BooksAll
-                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
-                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
+<ListBooksTable DataSource=@vm.BooksAll
+                AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
+                PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
 }
 
 @functions{
     [Parameter] string Id { get; set; }
-    
+
     PublisherPageViewModel vm = null;
 
     protected override void OnInit()

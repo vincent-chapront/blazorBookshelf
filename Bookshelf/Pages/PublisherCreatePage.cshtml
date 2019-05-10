@@ -1,5 +1,4 @@
-﻿
-@page "/publishercreate"
+﻿@page "/publishercreate"
 
 @using Bookshelf.ViewModel.Page
 @using Microsoft.AspNetCore.Components.Services
@@ -9,20 +8,19 @@
 
 <h1>@vm.Title</h1>
 
-    <table>
-        <tr>
-            <td></td>
-            <td style="color:red">@vm.NameMessage</td>
-        </tr>
-        <tr>
-            <td>Prénom</td>
-            <td><input type="text" bind="@vm.Name"/></td>
-        </tr>
-        <tr>
-            <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
-        </tr>
-    </table>
-    
+<table>
+    <tr>
+        <td></td>
+        <td style="color:red">@vm.NameMessage</td>
+    </tr>
+    <tr>
+        <td>Prénom</td>
+        <td><input type="text" bind="@vm.Name" /></td>
+    </tr>
+    <tr>
+        <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
+    </tr>
+</table>
 
 @functions{
     PublisherCreatePageViewModel vm = null;
