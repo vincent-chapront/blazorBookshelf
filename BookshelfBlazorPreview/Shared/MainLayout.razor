@@ -1,15 +1,40 @@
-﻿@inherits LayoutComponentBase
+﻿@using  Bookshelf
+@using Microsoft.AspNetCore.Components
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+@inherits LayoutComponentBase
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/en-us/aspnet/" target="_blank" class="ml-md-auto">About</a>
+@inject IUriHelper uriHelper
+@inject AppState appstate
+
+@if (appstate.IsSignedIn)
+{
+    <div class="sidebar">
+        <NavMenu />
+        <button onclick="@Signout">Déconnexion</button>
     </div>
 
-    <div class="content px-4">
-        @Body
+    <div class="main">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
+
+        <div class="content px-4">
+
+            @Body
+        </div>
     </div>
-</div>
+
+}
+else
+{
+    <SignIn />
+}
+
+@functions
+{
+    void Signout()
+    {
+        appstate.IsSignedIn = false;
+        uriHelper.NavigateTo("/");
+    }
+}

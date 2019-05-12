@@ -1,0 +1,80 @@
+﻿@using Bookshelf.ViewModel.Table
+@using Bookshelf.Model
+@using Bookshelf.Helpers
+
+<table>
+    <tr>
+        <th><button onclick="@(()=>SetOrder(Tris.Title))">Titre</button></th>
+        <th><button onclick="@(()=>SetOrder(Tris.Year))">Année</button></th>
+        <th><button onclick="@(()=>SetOrder(Tris.Publisher))">Editeur</button></th>
+        <th><button onclick="@(()=>SetOrder(Tris.Authors))">Auteur(s)</button></th>
+    </tr>
+    @foreach (var book in DataSourceSorted)
+    {
+    <tr>
+        <td>@book.Title</td>
+        <td>@book.Year</td>
+        <td><span class="link" onclick="@(()=>SelectPublisher(book.Publisher.Id))">@book.Publisher.Name</span></td>
+        <td>
+            @foreach (var author in book.Authors)
+                {
+            <span class="link" onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br />
+                }
+        </td>
+    </tr>
+    }
+</table>
+
+@functions
+{
+    [Parameter] IEnumerable<BookSummaryViewModel> DataSource { get; set; }
+    [Parameter] private Action<Guid> AuthorChanged { get; set; }
+    [Parameter] private Action<Guid> PublisherChanged { get; set; }
+
+    Tris currentSort = Tris.Title;
+    Orders currentOrder = Orders.Ascending;
+
+    IEnumerable<BookSummaryViewModel> DataSourceSorted
+    {
+        get
+        {
+            return GetDataSourceSorted(currentSort, currentOrder);
+        }
+    }
+
+    IEnumerable<BookSummaryViewModel> GetDataSourceSorted(Tris tri, Orders order)
+    {
+        switch (tri)
+        {
+            case Tris.Title:
+                return order == Orders.Ascending ? DataSource.OrderBy(x => x.Title) : DataSource.OrderByDescending(x => x.Title);
+            case Tris.Year:
+                return order == Orders.Ascending ? DataSource.OrderBy(x => x.Year) : DataSource.OrderByDescending(x => x.Year);
+            case Tris.Publisher:
+                return order == Orders.Ascending ? DataSource.OrderBy(x => x.Publisher) : DataSource.OrderByDescending(x => x.Publisher);
+            case Tris.Authors:
+                return order == Orders.Ascending ? DataSource.OrderBy(x => x.Authors.First()) : DataSource.OrderByDescending(x => x.Authors.First());
+            default: return DataSource.OrderBy(x => x.Title);
+        }
+    }
+
+    void SetOrder(Tris tri)
+    {
+        currentOrder =
+            (currentSort == tri && currentOrder == Orders.Ascending)
+            ? Orders.Descending
+            : Orders.Ascending;
+        currentSort = tri;
+    }
+
+    void SelectAuthor(Guid id)
+    {
+        AuthorChanged?.Invoke(id);
+    }
+
+    void SelectPublisher(Guid id)
+    {
+        Console.WriteLine("ListBooksTable.SelectPublisher : " + id+" : "+(PublisherChanged!=null));
+        PublisherChanged?.Invoke(id);
+    }
+}

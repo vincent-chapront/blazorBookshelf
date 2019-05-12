@@ -1,0 +1,47 @@
+﻿@page "/authors"
+
+@using Bookshelf.ViewModel.Page
+@using Microsoft.AspNetCore.Components
+@using Bookshelf
+
+@inject ApiClient apiClient
+@inject IUriHelper uriHelper
+
+<h1>@vm.Title</h1>
+
+@if (vm.AuthorsAll == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <a href="/authorCreate">Ajouter un auteur</a>
+    <table>
+        <tr>
+            <td>Nom</td>
+            <td>Nombre de livres</td>
+        </tr>
+        @foreach (var author in vm.AuthorsAll)
+        {
+            <tr>
+                <td><a href="/author/@author.Id">@author.Name</a></td>
+                <td>@author.NumberOfBooks</td>
+            </tr>
+        }
+    </table>
+}
+
+@functions{
+    AuthorsPageViewModel vm = null;
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+        vm = new AuthorsPageViewModel(uriHelper, apiClient);
+    }
+
+    protected override async Task OnInitAsync()
+    {
+        vm.UpdatePage();
+    }
+}

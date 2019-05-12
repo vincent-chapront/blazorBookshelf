@@ -1,0 +1,38 @@
+﻿@page "/"
+@page "/books"
+
+@using Microsoft.AspNetCore.Components
+@using Bookshelf
+@using Bookshelf.ViewModel.Page
+
+@inject ApiClient apiClient
+@inject IUriHelper uriHelper
+
+<h1>@vm.Title</h1>
+
+@if (vm.BooksAll == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <a href="/bookCreate">Ajouter un livre</a>
+    <ListBooksTable DataSource=@vm.BooksAll
+                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
+                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
+}
+
+@functions{
+    IndexPageViewModel vm = null;
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+        vm = new IndexPageViewModel(uriHelper, apiClient);
+    }
+
+    protected override async Task OnInitAsync()
+    {
+        vm.UpdatePage();
+    }
+}
