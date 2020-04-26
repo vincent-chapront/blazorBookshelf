@@ -11,7 +11,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string Title { get { return $"Liste des livres publiés par {PublisherFullName}"; } }
 
-        public PublisherPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public PublisherPageViewModel(NavigationManager uriHelper, ApiClient apiClient)
             : base(uriHelper, apiClient) { }
 
         public async void UpdatePage(Guid id)

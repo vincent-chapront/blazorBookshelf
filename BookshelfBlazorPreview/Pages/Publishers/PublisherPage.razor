@@ -5,7 +5,7 @@
 @using Bookshelf
 
 @inject ApiClient apiClient
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 
 <h1>@vm.Title</h1>
 
@@ -21,17 +21,17 @@ else
 }
 
 @functions{
-    [Parameter] string Id { get; set; }
+    [Parameter] public string Id { get; set; }
 
     PublisherPageViewModel vm = null;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         vm = new PublisherPageViewModel(uriHelper, apiClient);
     }
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         vm.UpdatePage(new Guid(Id));
     }

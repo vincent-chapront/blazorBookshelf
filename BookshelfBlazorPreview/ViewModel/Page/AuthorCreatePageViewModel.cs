@@ -4,7 +4,7 @@ namespace Bookshelf.ViewModel.Page
 {
     public class AuthorCreatePageViewModel
     {
-        protected readonly IUriHelper uriHelper;
+        protected readonly NavigationManager uriHelper;
 
         protected readonly ApiClient apiClient;
 
@@ -15,7 +15,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string Title { get { return $"Création d'un auteur"; } }
 
-        public AuthorCreatePageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public AuthorCreatePageViewModel(NavigationManager uriHelper, ApiClient apiClient)
         {
             this.uriHelper = uriHelper;
             this.apiClient = apiClient;

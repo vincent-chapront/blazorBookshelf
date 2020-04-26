@@ -8,7 +8,7 @@ namespace Bookshelf.ViewModel.Page
 {
     public class BookCreatePageViewModel
     {
-        protected readonly IUriHelper uriHelper;
+        protected readonly NavigationManager uriHelper;
 
         protected readonly ApiClient apiClient;
 
@@ -24,7 +24,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string PageTitle => "Création d'un livre";
 
-        public BookCreatePageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public BookCreatePageViewModel(NavigationManager uriHelper, ApiClient apiClient)
         {
             this.uriHelper = uriHelper;
             this.apiClient = apiClient;

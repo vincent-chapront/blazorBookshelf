@@ -6,7 +6,7 @@
 @using Bookshelf.ViewModel.Page
 
 @inject ApiClient apiClient
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 
 <h1>@vm.Title</h1>
 
@@ -18,20 +18,20 @@ else
 {
     <a href="/bookCreate">Ajouter un livre</a>
     <ListBooksTable DataSource=@vm.BooksAll
-                    AuthorChanged="@((e) => vm.AuthorChangedHandler(e))"
-                    PublisherChanged="@((e) => vm.PublisherChangedHandler(e))" />
+                    AuthorChanged="(e) => vm.AuthorChangedHandler(e)"
+                    PublisherChanged="(e) => vm.PublisherChangedHandler(e)" />
 }
 
 @functions{
     IndexPageViewModel vm = null;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         vm = new IndexPageViewModel(uriHelper, apiClient);
     }
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         vm.UpdatePage();
     }

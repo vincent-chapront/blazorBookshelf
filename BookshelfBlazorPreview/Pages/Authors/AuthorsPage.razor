@@ -5,7 +5,7 @@
 @using Bookshelf
 
 @inject ApiClient apiClient
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 
 <h1>@vm.Title</h1>
 
@@ -34,13 +34,13 @@ else
 @functions{
     AuthorsPageViewModel vm = null;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         vm = new AuthorsPageViewModel(uriHelper, apiClient);
     }
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         vm.UpdatePage();
     }

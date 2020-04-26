@@ -3,14 +3,14 @@
 
 @inherits LayoutComponentBase
 
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 @inject AppState appstate
 
 @if (appstate.IsSignedIn)
 {
     <div class="sidebar">
         <NavMenu />
-        <button onclick="@Signout">Déconnexion</button>
+        <button @onclick="Signout">Déconnexion</button>
     </div>
 
     <div class="main">

@@ -12,7 +12,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string Title { get { return "Liste des livres"; } }
 
-        public IndexPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public IndexPageViewModel(NavigationManager uriHelper, ApiClient apiClient)
             : base(uriHelper, apiClient) { }
 
         public async void UpdatePage()

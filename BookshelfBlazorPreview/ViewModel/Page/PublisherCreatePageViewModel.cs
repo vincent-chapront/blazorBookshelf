@@ -4,7 +4,7 @@ namespace Bookshelf.ViewModel.Page
 {
     public class PublisherCreatePageViewModel
     {
-        protected readonly IUriHelper uriHelper;
+        protected readonly NavigationManager uriHelper;
 
         protected readonly ApiClient apiClient;
         public string NameMessage { get; set; }
@@ -12,7 +12,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string Title { get { return $"Création d'un éditeur"; } }
 
-        public PublisherCreatePageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public PublisherCreatePageViewModel(NavigationManager uriHelper, ApiClient apiClient)
         {
             this.uriHelper = uriHelper;
             this.apiClient = apiClient;

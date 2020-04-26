@@ -2,7 +2,7 @@
 @using Bookshelf
 @using Bookshelf.Model
 
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 @inject ApiClient apiClient
 @inject AppState appState
 
@@ -27,7 +27,7 @@
         <td><input type="text" bind="@(userModel.Password)" /></td>
     </tr>
     <tr>
-        <td colspan="2"><button onclick="@Login">Login</button></td>
+        <td colspan="2"><button @onclick="Login">Login</button></td>
     </tr>
 </table>
 

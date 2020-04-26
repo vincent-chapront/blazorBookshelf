@@ -5,7 +5,7 @@
 @using Bookshelf
 
 @inject ApiClient apiClient
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 
 <h1>@vm.Title</h1>
 
@@ -19,20 +19,20 @@
         <td><input type="text" bind="@vm.Name" /></td>
     </tr>
     <tr>
-        <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
+        <td rowspan="2"><button @onclick="vm.Ajouter">Ajouter</button></td>
     </tr>
 </table>
 
 @functions{
     PublisherCreatePageViewModel vm = null;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
-        base.OnInit();
+        base.OnInitialized();
         vm = new PublisherCreatePageViewModel(uriHelper, apiClient);
     }
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
     }
 }

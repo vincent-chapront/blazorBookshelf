@@ -5,7 +5,7 @@
 @using Bookshelf
 
 @inject ApiClient apiClient
-@inject IUriHelper uriHelper
+@inject NavigationManager uriHelper
 
 <h1>@vm.PageTitle</h1>
 
@@ -51,24 +51,24 @@
     </tr>
 
     <tr>
-        <td rowspan="2"><button onclick="@vm.Ajouter">Ajouter</button></td>
+        <td rowspan="2"><button @onclick="vm.Ajouter">Ajouter</button></td>
     </tr>
 </table>
 
 @functions{
     BookCreatePageViewModel vm = null;
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
         Console.WriteLine("Init BookCreatePage A");
-        base.OnInit();
+        base.OnInitialized();
         Console.WriteLine("Init BookCreatePage B");
         vm = new BookCreatePageViewModel(uriHelper, apiClient);
 
         Console.WriteLine("Init BookCreatePage C");
     }
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
             Console.WriteLine("OnInitAsync A");
         vm.LoadAsync();

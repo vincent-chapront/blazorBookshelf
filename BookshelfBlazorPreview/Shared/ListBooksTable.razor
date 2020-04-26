@@ -4,21 +4,23 @@
 
 <table>
     <tr>
-        <th><button onclick="@(()=>SetOrder(Tris.Title))">Titre</button></th>
-        <th><button onclick="@(()=>SetOrder(Tris.Year))">Année</button></th>
-        <th><button onclick="@(()=>SetOrder(Tris.Publisher))">Editeur</button></th>
-        <th><button onclick="@(()=>SetOrder(Tris.Authors))">Auteur(s)</button></th>
+        <th>
+            <button @onclick="()=>SetOrder(Tris.Title)">Titre</button>
+        </th>
+        <th><button @onclick="()=>SetOrder(Tris.Year)">Année</button></th>
+        <th><button @onclick="()=>SetOrder(Tris.Publisher)">Editeur</button></th>
+        <th><button @onclick="()=>SetOrder(Tris.Authors)">Auteur(s)</button></th>
     </tr>
     @foreach (var book in DataSourceSorted)
     {
     <tr>
         <td>@book.Title</td>
         <td>@book.Year</td>
-        <td><span class="link" onclick="@(()=>SelectPublisher(book.Publisher.Id))">@book.Publisher.Name</span></td>
+        <td><span class="link" @onclick="()=>SelectPublisher(book.Publisher.Id)">@book.Publisher.Name</span></td>
         <td>
             @foreach (var author in book.Authors)
                 {
-            <span class="link" onclick="@(()=>SelectAuthor(author.Id))">@author.LastName.ToUpper() @author.FirstName</span><br />
+            <span class="link" @onclick="()=>SelectAuthor(author.Id)">@author.LastName.ToUpper() @author.FirstName</span><br />
                 }
         </td>
     </tr>
@@ -27,9 +29,9 @@
 
 @functions
 {
-    [Parameter] IEnumerable<BookSummaryViewModel> DataSource { get; set; }
-    [Parameter] private Action<Guid> AuthorChanged { get; set; }
-    [Parameter] private Action<Guid> PublisherChanged { get; set; }
+    [Parameter] public IEnumerable<BookSummaryViewModel> DataSource { get; set; }
+    [Parameter] public Action<Guid> AuthorChanged { get; set; }
+    [Parameter] public Action<Guid> PublisherChanged { get; set; }
 
     Tris currentSort = Tris.Title;
     Orders currentOrder = Orders.Ascending;

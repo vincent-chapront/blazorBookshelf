@@ -7,7 +7,7 @@ namespace Bookshelf.ViewModel.Page
 {
     public class PublishersPageViewModel
     {
-        protected readonly IUriHelper uriHelper;
+        protected readonly NavigationManager uriHelper;
 
         protected readonly ApiClient apiClient;
 
@@ -15,7 +15,7 @@ namespace Bookshelf.ViewModel.Page
 
         public string Title { get { return "Liste des éditeurs"; } }
 
-        public PublishersPageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public PublishersPageViewModel(NavigationManager uriHelper, ApiClient apiClient)
         {
             this.uriHelper = uriHelper;
             this.apiClient = apiClient;

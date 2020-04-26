@@ -7,13 +7,13 @@ namespace Bookshelf.ViewModel.Page
 {
     public abstract class PageViewModel
     {
-        protected readonly IUriHelper uriHelper;
+        protected readonly NavigationManager uriHelper;
 
         protected readonly ApiClient apiClient;
 
         public IEnumerable<BookSummaryViewModel> BooksAll { get; set; } = null;
 
-        public PageViewModel(IUriHelper uriHelper, ApiClient apiClient)
+        public PageViewModel(NavigationManager uriHelper, ApiClient apiClient)
         {
             this.uriHelper = uriHelper;
             this.apiClient = apiClient;
